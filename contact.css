@@ -1,0 +1,28 @@
+header {
+    background-color: black;
+    color: white;
+    padding: 15px 40px;
+    
+    /* Dessa tre rader sköter placeringen: */
+    display: flex; 
+    justify-content: space-between; /* Trycker loggan till vänster och nav till höger */
+    align-items: center; /* Centrerar allt i höjdled */
+}
+
+/* Styla länkarna och kundvagnen som ligger till höger */
+.header-links {
+    display: flex;
+    gap: 20px; /* Mellanrum mellan Home, Contact och Vagnen */
+    align-items: center;
+}
+
+.header-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+body{
+    background-color: deepskyblue;
+
+}

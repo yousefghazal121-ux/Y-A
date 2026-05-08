@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,
+    initial-scale=1.0">
+    <title>Login | VEXAIRE</title>
+    <link rel="stylesheet" href="login.css">
+    <link  href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="icon" type="image/jpg" href="939B0C6F-46E1-40B0-B658-803C40F01E1D.png" width="500" height="500">
+</head>
+
+<body>
+   
+    <div class="wrapper">
+        <form action="index.html">
+        <h1>VEXAIRE</h1>
+
+       <nav class="login-nav">
+        <a href="index.html">Home</a>
+        <a href="Shop.html">Shop</a>
+        <a href="contacts.html">Contact</a>
+       </nav>
+      
+        <div class="input-box">
+            <input type="text" placeholder="Username" required>
+            <i class="bx bxs-user"></i> 
+        </div>
+
+        <div class="input-box">
+            <input type="password" id="loginPass" placeholder="password" minlength="7" required>
+            <i class="bx bx-hide" id="toggleIcon" style="cursor: pointer;"></i>
+        </div>
+
+        <div class="remember-forgot">
+            <label><input type="checkbox">Remember me</label>
+            <a href="password.html">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn">Login</button>
+
+        <div class="register-link">
+            <p>Don't have an account? <a href="register.html">Register</a></p>
+        </div>
+    </form>
+    </div>
+
+<script src="scr.js"></script>
+
+</body>
+
+</html>

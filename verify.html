@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Account | VEXAIRE</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="icon" type="image/jpg" href="939B0C6F-46E1-40B0-B658-803C40F01E1D.png" width="500" height="500">
+</head>
+<body>
+    <div class="wrapper"> 
+        <form id="verifyForm">
+            <h1>Verify Email</h1>
+            <p style="text-align: center; margin-bottom: 20px;">
+                Enter the 4-digit code we sent to your email.
+            </p>
+            
+           
+
+         <div class="input-box">
+    <input 
+        type="text" 
+        id="verificationCode" 
+        placeholder="4-digit code" 
+        inputmode="numeric" 
+        pattern="[0-9]*" 
+        maxlength="4" 
+        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+        required>
+    <i class='bx bxs-shield'></i>
+</div>
+
+            <button type="submit" class="btn">Verify & Create Account</button>
+       </form>
+    </div>
+
+    <script>
+        const verifyForm = document.getElementById('verifyForm');
+
+        verifyForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Get the code the user typed, and the code we saved in localStorage
+            const userCode = document.getElementById('verificationCode').value;
+            const savedCode = localStorage.getItem('tempCode');
+
+            if (userCode === savedCode) {
+                // If correct, move the temporary data to the final registered data
+                localStorage.setItem('registeredUser', localStorage.getItem('tempUser'));
+                localStorage.setItem('registeredEmail', localStorage.getItem('tempEmail'));
+                localStorage.setItem('registeredPass', localStorage.getItem('tempPass'));
+
+                // Clear the temporary data so it doesn't take up space
+                localStorage.removeItem('tempUser');
+                localStorage.removeItem('tempEmail');
+                localStorage.removeItem('tempPass');
+                localStorage.removeItem('tempCode');
+
+                alert("Account successfully verified and created!");
+                
+                // Send them to the login page
+                window.location.href = "login.html";
+            } else {
+                alert("Incorrect verification code. Please try again.");
+            }
+        });
+        // Inkludera EmailJS SDK (lägg denna i din <head> eller längst ner i <body>)
+// <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+
+    </script>
+</body>
+</html>

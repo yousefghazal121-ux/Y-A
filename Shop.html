@@ -1,0 +1,164 @@
+<!doctype html>
+
+<html>
+<head>
+<title>our clothes | VEXAIRE</title>
+<link rel="stylesheet" href="Shop.css">
+<link rel="icon" type="image/jpg" href="939B0C6F-46E1-40B0-B658-803C40F01E1D.png" width="500" height="500">
+</head>
+<body>
+
+<header>
+    <h1>VEXAIRE</h1>
+    
+    <nav class="header-links">
+    <a href="index.html">Home</a>
+    <a href="contacts.html">Contact</a>
+    <a href="login.html">Login</a> <a href="#" class="cart-btn">🛒 <span id="cart-count">0</span></a>
+</nav>
+
+</header>
+<div class="hero-section">
+    <h2>Explore Our Collection</h2>
+    <p><strong>Find the latest trends in street wear and accessories.</p>
+  </div>
+
+  <main class="product-grid">
+      <div class="product-card">
+        <img src="C309D463-1F8B-4782-B3FC-9F2B83EEEFDD.png" alt="VEXAIRE Hoodie" width="270">
+        <h3> VEXAIRE Overhead Hoodie </h3>
+        <p class="price">$29.99</p>
+        <button class="buy-btn">Add to Cart</button>
+     </div>
+<br>
+     <br>
+<br>
+<div class="product-card">
+   <img src="https://via.placeholder.com/150" alt="Denim Jacket">
+   <h3>Classic Denim</h3>
+   <p class="price">$79.99</p>
+   <button class="buy-btn">Add to Cart</button>
+</div>
+  </main>
+
+<div id="cart-sidebar" class="cart-sidebar">
+    <div class="cart-header">
+        <h2>Your Cart</h2>
+        <button id="close-cart" class="close-btn">✖</button>
+    </div>
+    
+    <div id="cart-items-container"></div>
+    
+    <div class="cart-footer">
+        <div class="cart-total">
+            <h3>Total: <span id="total-price">$0.00</span></h3>
+        </div>
+        <button id="clear-cart" class="clear-btn">Clear Cart</button>
+    </div>
+</div>
+    
+    <script>
+    // 1. Hämta sparade varor från localStorage eller skapa en tom lista
+    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    
+    // 2. Hämta alla HTML-element vi behöver styra
+    const cartDisplay = document.getElementById('cart-count'); 
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const totalPriceElement = document.getElementById('total-price');
+
+    // 3. Huvudfunktion för att uppdatera varukorgen på skärmen
+    function updateUI() {
+        // Uppdatera lilla siffran uppe vid kundvagnen
+        cartDisplay.innerText = cartItems.length;
+        cartDisplay.style.display = cartItems.length > 0 ? 'inline-block' : 'none';
+
+        // Töm listan innan vi ritar upp den på nytt
+        cartItemsContainer.innerHTML = '';
+        let total = 0;
+
+        // Loopa igenom alla varor i varukorgen och skapa HTML för varje
+        cartItems.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'cart-item';
+            
+            // Här lägger vi in produkten, priset OCH det nya lilla krysset
+            div.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="remove-btn" data-index="${index}">✖</button>
+                    <span>${item.name}</span>
+                </div>
+                <span>${item.price}</span>
+            `;
+            cartItemsContainer.appendChild(div);
+            
+            // Räkna ut det nya totalpriset
+            total += parseFloat(item.price.replace('$', ''));
+        });
+        
+        // Uppdatera totalpriset på skärmen
+        totalPriceElement.innerText = '$' + total.toFixed(2);
+    }
+
+    // 4. Ta bort EN specifik produkt när man klickar på lilla krysset
+    cartItemsContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('remove-btn')) {
+            const index = e.target.getAttribute('data-index');
+            cartItems.splice(index, 1); // Ta bort exakt denna vara från listan
+            localStorage.setItem('cartItems', JSON.stringify(cartItems)); // Spara den nya listan
+            updateUI(); // Uppdatera skärmen direkt
+        }
+    });
+
+    // 5. Vad som händer när man klickar på "Add to Cart"
+    document.querySelectorAll('.buy-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const card = e.target.closest('.product-card');
+            const name = card.querySelector('h3').innerText;
+            const price = card.querySelector('.price').innerText;
+
+            // Lägg till i listan och spara
+            cartItems.push({ name, price });
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            
+            updateUI();
+            
+            // Öppna vagnen automatiskt
+            cartSidebar.classList.add('open'); 
+
+            // Ändra knapp-texten tillfälligt för snygg effekt
+            const originalText = button.innerText;
+            button.innerText = "Added! ✅";
+            setTimeout(() => {
+                button.innerText = originalText;
+            }, 2000);
+        });
+    });
+
+    // 6. Töm hela vagnen med "Clear Cart"-knappen
+    document.getElementById('clear-cart').addEventListener('click', () => {
+        if(confirm("Are you sure you want to clear your cart?")) {
+            cartItems = [];
+            localStorage.removeItem('cartItems');
+            updateUI();
+        }
+    });
+
+    // 7. Öppna vagnen manuellt via ikonen uppe till höger
+    document.querySelector('.cart-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        cartSidebar.classList.add('open');
+        updateUI();
+    });
+
+    // 8. Stäng vagnen via stora kryss-knappen
+    document.getElementById('close-cart').addEventListener('click', () => {
+        cartSidebar.classList.remove('open');
+    });
+
+    // 9. Kör funktionen direkt när sidan laddas så vagnen ser rätt ut från start
+    updateUI();
+</script>
+
+</body>
+</html>

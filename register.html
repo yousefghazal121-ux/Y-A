@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | VEXAIRE</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="icon" type="image/jpg" href="939B0C6F-46E1-40B0-B658-803C40F01E1D.png" width="500" height="500">
+</head>
+<body>
+    <div class="wrapper">
+        <form id="registerForm">
+            <h1>Register</h1>
+            
+            <div class="input-box">
+                <input type="text" placeholder="Username" required>
+                <i class="bx bxs-user"></i> 
+            </div>
+
+            <div class="input-box">
+                <input type="email" placeholder="Email" required>
+                <i class="bx bxs-envelope"></i> 
+            </div>
+
+            <div class="input-box">
+                <input type="password" id="regPass" placeholder="Password" minlength="7" required>
+                <i class="bx bx-hide" id="toggleReg" style="cursor: pointer;"></i>
+            </div>
+
+            <button type="submit" class="btn">Register</button>
+
+            <div class="register-link">
+                <p>Already have an account? <a href="login.html">Login</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <script>
+        // 2. Initiera direkt när sidan laddas
+        (function() {
+            emailjs.init("Fzc1uW6QF0chm2mL1"); // Din Public Key
+        })();
+
+        const toggleReg = document.getElementById('toggleReg');
+        const regPass = document.getElementById('regPass');
+        const registerForm = document.getElementById('registerForm');
+        
+        toggleReg.addEventListener('click', function () {
+            const isPassword = regPass.type === 'password';
+            regPass.type = isPassword ? 'text' : 'password';
+            this.classList.toggle('bx-show');
+            this.classList.toggle('bx-hide');
+        });
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+
+            const username = document.querySelector('input[type="text"]').value;
+            const email = document.querySelector('input[type="email"]').value; 
+            const password = document.getElementById('regPass').value;
+            const generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
+
+            // 3. Parametrar som matchar din mall i EmailJS
+            const templateParams = {
+                to_email: email,             
+                to_name: username,
+                verification_code: generatedCode 
+            };
+
+            // 4. Skicka mejlet INNAN du skickar vidare användaren
+            emailjs.send('service_jz9s1wp', 'template_fzfokz5', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    
+                    // Spara data när vi vet att det gick bra
+                    localStorage.setItem('tempUser', username);
+                    localStorage.setItem('tempEmail', email); 
+                    localStorage.setItem('tempPass', password);
+                    localStorage.setItem('tempCode', generatedCode);
+
+                    alert("En verifieringskod har skickats till " + email);
+                    window.location.href = "verify.html"; 
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert("Could not send the code. Please check your internet connection or EmailJS settings.");
+                });
+        });
+    </script>
+</body>
+</html>
